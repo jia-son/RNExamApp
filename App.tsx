@@ -10,10 +10,21 @@ import {
 import GetLocation from 'react-native-get-location';
 import Geocoder from 'react-native-geocoding';
 import Config from 'react-native-config';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const weatherApiKey = Config.WEATHER_API_KEY!;
 Geocoder.init(Config.API_KEY as string);
+
+const icons: any = {
+  Clouds: 'weather-cloudy',
+  Clear: 'weather-sunny',
+  Rain: 'weather-pouring',
+  Atmosphere: 'weather-windy-variant',
+  Snow: 'weather-snowy',
+  Drizzle: 'weather-rainy',
+  Thunderstorm: 'weather-lightning-rainy',
+};
 
 export default function App(): React.JSX.Element {
   const [city, setCity] = useState('Loading...');
@@ -54,12 +65,25 @@ export default function App(): React.JSX.Element {
             const weatherJson = await response.json();
             const weatherList = weatherJson.list;
 
+            const convertUnixTimestamp = (unixTimestamp: any) => {
+              return new Date(unixTimestamp * 1000).toLocaleString('ko-KR', {
+                timeZone: 'Asia/Seoul',
+              });
+            };
+
+            // if (Array.isArray(weatherList)) {
+            //   const daysArray = weatherList.map(day => ({
+            //     temp: day.main.temp,
+            //     dataTime: new Date(day.dt * 1000)
+            //       .toLocaleDateString()
+            //       .substring(0, 12),
+            //     description: day.weather[0].description,
+            //     weather: day.weather[0].main,
+            //   }));
             if (Array.isArray(weatherList)) {
               const daysArray = weatherList.map(day => ({
                 temp: day.main.temp,
-                dataTime: new Date(day.dt * 1000)
-                  .toLocaleDateString()
-                  .substring(0, 12),
+                dataTime: convertUnixTimestamp(day.dt),
                 description: day.weather[0].description,
                 weather: day.weather[0].main,
               }));
@@ -102,10 +126,13 @@ export default function App(): React.JSX.Element {
         ) : (
           days.map((day, index) => (
             <View style={styles.day} key={index}>
-              <Text style={styles.temp}>
-                {parseFloat(day.temp).toFixed(1)}°C
-              </Text>
-              {/* <Text style={styles.description}>{day.dataTime}</Text> */}
+              <Text>{day.dataTime}</Text>
+              <View style={styles.weatherIcon}>
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp).toFixed(1)}°C
+                </Text>
+                <Icon name={icons[day.weather]} size={50} color={'white'} />
+              </View>
               <Text style={styles.description}>{day.weather}</Text>
               <Text style={styles.tinyText}>{day.description}</Text>
             </View>
@@ -119,7 +146,7 @@ export default function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FDD224',
+    backgroundColor: '#DE7E24',
   },
   city: {
     flex: 1,
@@ -129,22 +156,35 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 40,
     fontWeight: '600',
+    color: 'white',
   },
   weather: {},
   day: {
     width: SCREEN_WIDTH,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
   },
   temp: {
     marginTop: 50,
-    fontSize: 110,
-    fontWeight: '700',
+    fontSize: 80,
+    fontWeight: '500',
+    color: 'white',
   },
   description: {
     marginTop: -10,
-    fontSize: 50,
+    marginLeft: 10,
+    fontSize: 30,
+    color: 'white',
   },
   tinyText: {
     fontSize: 20,
+    color: 'white',
+    marginLeft: 10,
+  },
+  weatherIcon: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
