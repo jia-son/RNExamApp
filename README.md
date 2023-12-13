@@ -108,6 +108,36 @@ _추후 종이에 한 번 더 직접 그려보기_
 
    정상적으로 실행이 완료되면 IOS, Android 등 어느 환경으로 실행시킬지 선택지가 뜨기 때문에 개발자 환경에 따라 단축키 입력하기.
 
+<br>
+
+4. 환경 변수 지정하는 법
+
+   - 프로젝트 폴더 터미널에서  
+      **npm install react-native-config,**  
+      **npm install react-native-dotenv,**  
+      입력하여 라이브러리 다운로드
+
+   - .env 파일 생성하여 환경 변수 추가
+
+   - android > settings.gradle에 다음 내용 추가
+
+   ```javascript
+   include ':react-native-config'
+   project(':react-native-config').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-config/android')
+   ```
+
+   - android > app > build.gradle에 다음 내용 추가
+
+   ```javascript
+   apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+   ```
+
+   - 사용할 때에는 다음과 같이 사용
+
+   ```javascript
+   import Config from 'react-native-config';
+   ```
+
 ---
 
 위의 과정은 react native-cli 환경에서 프로젝트를 생성 및 실행하는 경우로, expo를 사용할 경우 다른 참고 자료를 통해 진행해야 한다.  
