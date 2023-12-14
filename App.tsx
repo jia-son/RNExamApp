@@ -189,148 +189,7 @@
 //   },
 // });
 
-// 감소 타이머
-// import React, {useEffect, useState} from 'react';
-// import {
-//   StyleSheet,
-//   View,
-//   Text,
-//   TouchableOpacity,
-//   TextInput,
-// } from 'react-native';
-// import Icon from 'react-native-vector-icons/Fontisto';
-
-// export default function App(): React.JSX.Element {
-//   const [seconds, setSeconds] = useState(0);
-//   const [initialTime, setInitialTime] = useState(0); // 사용자에게 값 입력받기 위해 추가
-//   const [isActive, setIsActive] = useState(false);
-
-//   useEffect(() => {
-//     var interval: any;
-
-//     if (isActive) {
-//       interval = setInterval(() => {
-//         // setSeconds(prevSconds => prevSconds + 1);
-//         if (seconds !== 0) {
-//           setSeconds(prevSeconds => prevSeconds - 1); // 증가가 아닌 감소
-//         } else {
-//           handleReset();
-//         }
-//       }, 1000);
-//     } else {
-//       clearInterval(interval);
-//     }
-
-//     return () => clearInterval(interval);
-//   }, [isActive, seconds]);
-
-//   const handleToggle = () => {
-//     setIsActive(!isActive);
-//   };
-
-//   const handleReset = () => {
-//     // setSeconds(0);
-//     setSeconds(initialTime * 60);
-//     setIsActive(false);
-//   };
-
-//   const handleInitialTimeChange = (text: string) => {
-//     setInitialTime(parseInt(text, 10));
-//     // setSeconds(parseInt(text, 10));
-//     setSeconds(parseInt(text, 10) * 60); // 분 단위로 변환
-//   };
-
-//   const formattedTime = () => {
-//     const minutes = Math.floor(seconds / 60);
-//     const remainingSeconds = seconds % 60;
-//     return `${String(minutes).padStart(2, '0')}:${String(
-//       remainingSeconds,
-//     ).padStart(2, '0')}`;
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.timeContainer}>
-//         <Text style={styles.timeStyle}>{formattedTime()}</Text>
-//       </View>
-//       <View style={styles.inputContainer}>
-//         <TextInput
-//           style={styles.inputStyle}
-//           placeholderTextColor="white"
-//           placeholder="시간 입력 (분 단위)"
-//           keyboardType="numeric"
-//           onChangeText={handleInitialTimeChange}
-//           underlineColorAndroid="white"
-//         />
-//       </View>
-//       <View style={styles.buttonContainer}>
-//         <TouchableOpacity onPress={handleToggle}>
-//           <Text style={styles.buttonStyle}>
-//             {isActive ? (
-//               <Icon name="pause" size={50} color={'white'} />
-//             ) : (
-//               <Icon name="play" size={50} color={'white'} />
-//             )}
-//           </Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity onPress={handleReset}>
-//           <Text style={styles.buttonStyle}>
-//             <Icon name="stop" size={50} color={'white'} />
-//           </Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#252321',
-//   },
-//   timeContainer: {
-//     flex: 2,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   buttonContainer: {
-//     flex: 1,
-//     flexDirection: 'row',
-//     justifyContent: 'space-around',
-//     alignItems: 'center',
-//   },
-//   timeStyle: {
-//     fontSize: 50,
-//     fontWeight: '400',
-//     color: 'white',
-//   },
-//   buttonStyle: {
-//     fontSize: 50,
-//     fontWeight: '400',
-//     color: 'white',
-//     paddingBottom: 100,
-//   },
-//   inputContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   inputStyle: {
-//     height: 50,
-//     width: '30%',
-//     borderColor: 'white',
-//     borderWidth: 1,
-//     color: 'white',
-//     textAlign: 'center',
-//     borderTopWidth: 0,
-//     borderLeftWidth: 0,
-//     borderRightWidth: 0,
-//     borderBottomWidth: 0,
-//     paddingBottom: 10,
-//   },
-// });
-
-// 스크롤 감소 타이머
+// // 스크롤 감소 타이머
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -348,8 +207,8 @@ export default function App(): React.JSX.Element {
   const [initialSTime, setInitialSTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
-  const minuteArray = Array.from({length: 60}, (_, index) => index + 1);
-  const secondArray = Array.from({length: 60}, (_, index) => index + 1);
+  const minuteArray = Array.from({length: 60}, (_, index) => index);
+  const secondArray = Array.from({length: 60}, (_, index) => index);
 
   useEffect(() => {
     var interval: any;
@@ -402,19 +261,29 @@ export default function App(): React.JSX.Element {
         <Text style={styles.timeStyle}>{formattedTime()}</Text>
       </View>
       <View style={styles.scrollContainer}>
-        <View style={{flexDirection: 'row'}}>
-          <ScrollView contentContainerStyle={styles.scrollContentContainer}>
+        <View style={styles.scrollContainerFirstChild}>
+          <ScrollView
+            pagingEnabled={true}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContentContainer}
+            indicatorStyle={'white'}>
             {minuteArray.map((minute, index) => (
               <TouchableOpacity
+                style={styles.touchableOpacity}
                 key={index}
                 onPress={() => handleMinuteSelection(minute)}>
                 <Text style={styles.scrollMinutes}>{minute}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
-          <ScrollView contentContainerStyle={styles.scrollContentContainer}>
+          <ScrollView
+            pagingEnabled={true}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContentContainer}
+            indicatorStyle={'white'}>
             {secondArray.map((second, index) => (
               <TouchableOpacity
+                style={styles.touchableOpacity}
                 key={index}
                 onPress={() => handleSecondSelection(second)}>
                 <Text style={styles.scrollMinutes}>{second}</Text>
@@ -471,14 +340,25 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   scrollMinutes: {
+    height: 45,
     color: 'white',
-    fontSize: 25,
+    fontSize: 30,
+    paddingHorizontal: 30,
   },
   scrollContentContainer: {
     flexDirection: 'column',
+    alignItems: 'center',
   },
   scrollContainer: {
     flex: 1,
-    alignItems: 'center',
+  },
+  scrollContainerFirstChild: {
+    flexDirection: 'row',
+    height: 45,
+  },
+  touchableOpacity: {
+    borderColor: 'white',
+    borderLeftWidth: 1, // 좌측에 선 추가
+    borderRightWidth: 1,
   },
 });
