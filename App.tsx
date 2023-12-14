@@ -190,123 +190,209 @@
 // });
 
 // // 스크롤 감소 타이머
-import React, {useEffect, useState} from 'react';
+// import React, {useEffect, useState} from 'react';
+// import {
+//   StyleSheet,
+//   View,
+//   Text,
+//   TouchableOpacity,
+//   ScrollView,
+// } from 'react-native';
+// import Icon from 'react-native-vector-icons/Fontisto';
+
+// export default function App(): React.JSX.Element {
+//   const [seconds, setSeconds] = useState(0);
+//   const [initialTime, setInitialTime] = useState(0);
+//   const [initialMTime, setInitialMTime] = useState(0);
+//   const [initialSTime, setInitialSTime] = useState(0);
+//   const [isActive, setIsActive] = useState(false);
+
+//   const minuteArray = Array.from({length: 60}, (_, index) => index);
+//   const secondArray = Array.from({length: 60}, (_, index) => index);
+
+//   useEffect(() => {
+//     var interval: any;
+
+//     if (isActive) {
+//       interval = setInterval(() => {
+//         if (seconds !== 0) {
+//           setSeconds(prevSeconds => prevSeconds - 1); // 증가가 아닌 감소
+//         } else {
+//           handleReset();
+//         }
+//       }, 1000);
+//     } else {
+//       clearInterval(interval);
+//     }
+
+//     return () => clearInterval(interval);
+//   }, [isActive, seconds]);
+
+//   const handleToggle = () => {
+//     setIsActive(!isActive);
+//   };
+
+//   const handleReset = () => {
+//     setSeconds(initialTime * 60);
+//     setIsActive(false);
+//   };
+
+//   const handleMinuteSelection = (selectedMinutes: number) => {
+//     setInitialMTime(selectedMinutes);
+//     setSeconds(selectedMinutes * 60);
+//   };
+
+//   const handleSecondSelection = (selectedSeconds: number) => {
+//     setInitialSTime(selectedSeconds);
+//     setSeconds(seconds + selectedSeconds);
+//   };
+
+//   const formattedTime = () => {
+//     const minutes = Math.floor(seconds / 60);
+//     const remainingSeconds = seconds % 60;
+//     return `${String(minutes).padStart(2, '0')}:${String(
+//       remainingSeconds,
+//     ).padStart(2, '0')}`;
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <View style={styles.timeContainer}>
+//         <Text style={styles.timeStyle}>{formattedTime()}</Text>
+//       </View>
+//       <View style={styles.scrollContainer}>
+//         <View style={styles.scrollContainerFirstChild}>
+//           <ScrollView
+//             pagingEnabled={true}
+//             showsVerticalScrollIndicator={false}
+//             contentContainerStyle={styles.scrollContentContainer}
+//             indicatorStyle={'white'}>
+//             {minuteArray.map((minute, index) => (
+//               <TouchableOpacity
+//                 style={styles.touchableOpacity}
+//                 key={index}
+//                 onPress={() => handleMinuteSelection(minute)}>
+//                 <Text style={styles.scrollMinutes}>{minute}</Text>
+//               </TouchableOpacity>
+//             ))}
+//           </ScrollView>
+//           <ScrollView
+//             pagingEnabled={true}
+//             showsVerticalScrollIndicator={false}
+//             contentContainerStyle={styles.scrollContentContainer}
+//             indicatorStyle={'white'}>
+//             {secondArray.map((second, index) => (
+//               <TouchableOpacity
+//                 style={styles.touchableOpacity}
+//                 key={index}
+//                 onPress={() => handleSecondSelection(second)}>
+//                 <Text style={styles.scrollMinutes}>{second}</Text>
+//               </TouchableOpacity>
+//             ))}
+//           </ScrollView>
+//         </View>
+//       </View>
+//       <View style={styles.buttonContainer}>
+//         <TouchableOpacity onPress={handleToggle}>
+//           <Text style={styles.buttonStyle}>
+//             {isActive ? (
+//               <Icon name="pause" size={50} color={'white'} />
+//             ) : (
+//               <Icon name="play" size={50} color={'white'} />
+//             )}
+//           </Text>
+//         </TouchableOpacity>
+//         <TouchableOpacity onPress={handleReset}>
+//           <Text style={styles.buttonStyle}>
+//             <Icon name="stop" size={50} color={'white'} />
+//           </Text>
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#252321',
+//   },
+//   timeContainer: {
+//     flex: 2,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   buttonContainer: {
+//     flex: 1,
+//     flexDirection: 'row',
+//     justifyContent: 'space-around',
+//     alignItems: 'center',
+//   },
+//   timeStyle: {
+//     fontSize: 50,
+//     fontWeight: '400',
+//     color: 'white',
+//   },
+//   buttonStyle: {
+//     fontSize: 50,
+//     fontWeight: '400',
+//     color: 'white',
+//     paddingBottom: 100,
+//   },
+//   scrollMinutes: {
+//     height: 45,
+//     color: 'white',
+//     fontSize: 30,
+//     paddingHorizontal: 30,
+//   },
+//   scrollContentContainer: {
+//     flexDirection: 'column',
+//     alignItems: 'center',
+//   },
+//   scrollContainer: {
+//     flex: 1,
+//   },
+//   scrollContainerFirstChild: {
+//     flexDirection: 'row',
+//     height: 45,
+//   },
+//   touchableOpacity: {
+//     borderColor: 'white',
+//     borderLeftWidth: 1,
+//     borderRightWidth: 1,
+//   },
+// });
+
+// 노마드 코더의 Work hard travel hard app 따라가기
+/*
+1. TextInput 컴포넌트를 다루는 방법
+2. 데이터를 유지시키는 방법 (아마도 핸드폰에 저장하기..?)
+3. state 사용법
+*/
+import React from 'react';
 import {
+  StatusBar,
   StyleSheet,
-  View,
   Text,
+  View,
   TouchableOpacity,
-  ScrollView,
+  TouchableHighlight,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Fontisto';
+import {theme} from './colors';
 
-export default function App(): React.JSX.Element {
-  const [seconds, setSeconds] = useState(0);
-  const [initialTime, setInitialTime] = useState(0);
-  const [initialMTime, setInitialMTime] = useState(0);
-  const [initialSTime, setInitialSTime] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-
-  const minuteArray = Array.from({length: 60}, (_, index) => index);
-  const secondArray = Array.from({length: 60}, (_, index) => index);
-
-  useEffect(() => {
-    var interval: any;
-
-    if (isActive) {
-      interval = setInterval(() => {
-        if (seconds !== 0) {
-          setSeconds(prevSeconds => prevSeconds - 1); // 증가가 아닌 감소
-        } else {
-          handleReset();
-        }
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
-
-  const handleToggle = () => {
-    setIsActive(!isActive);
-  };
-
-  const handleReset = () => {
-    setSeconds(initialTime * 60);
-    setIsActive(false);
-  };
-
-  const handleMinuteSelection = (selectedMinutes: number) => {
-    setInitialMTime(selectedMinutes);
-    setSeconds(selectedMinutes * 60);
-  };
-
-  const handleSecondSelection = (selectedSeconds: number) => {
-    setInitialSTime(selectedSeconds);
-    setSeconds(seconds + selectedSeconds);
-  };
-
-  const formattedTime = () => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(
-      remainingSeconds,
-    ).padStart(2, '0')}`;
-  };
-
+export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.timeContainer}>
-        <Text style={styles.timeStyle}>{formattedTime()}</Text>
-      </View>
-      <View style={styles.scrollContainer}>
-        <View style={styles.scrollContainerFirstChild}>
-          <ScrollView
-            pagingEnabled={true}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContentContainer}
-            indicatorStyle={'white'}>
-            {minuteArray.map((minute, index) => (
-              <TouchableOpacity
-                style={styles.touchableOpacity}
-                key={index}
-                onPress={() => handleMinuteSelection(minute)}>
-                <Text style={styles.scrollMinutes}>{minute}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-          <ScrollView
-            pagingEnabled={true}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContentContainer}
-            indicatorStyle={'white'}>
-            {secondArray.map((second, index) => (
-              <TouchableOpacity
-                style={styles.touchableOpacity}
-                key={index}
-                onPress={() => handleSecondSelection(second)}>
-                <Text style={styles.scrollMinutes}>{second}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleToggle}>
-          <Text style={styles.buttonStyle}>
-            {isActive ? (
-              <Icon name="pause" size={50} color={'white'} />
-            ) : (
-              <Icon name="play" size={50} color={'white'} />
-            )}
-          </Text>
+      <StatusBar barStyle={'default'} />
+      <View style={styles.header}>
+        <TouchableOpacity>
+          <Text style={styles.btnText}>Work</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleReset}>
-          <Text style={styles.buttonStyle}>
-            <Icon name="stop" size={50} color={'white'} />
-          </Text>
-        </TouchableOpacity>
+        <TouchableHighlight
+          underlayColor="#DDDDDD"
+          onPress={() => console.log('pressd')}>
+          <Text style={styles.btnText}>Travel</Text>
+        </TouchableHighlight>
       </View>
     </View>
   );
@@ -315,50 +401,17 @@ export default function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#252321',
+    backgroundColor: theme.bg,
+    paddingHorizontal: 20,
   },
-  timeContainer: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    flex: 1,
+  header: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    marginTop: 100,
   },
-  timeStyle: {
-    fontSize: 50,
-    fontWeight: '400',
-    color: 'white',
-  },
-  buttonStyle: {
-    fontSize: 50,
-    fontWeight: '400',
-    color: 'white',
-    paddingBottom: 100,
-  },
-  scrollMinutes: {
-    height: 45,
-    color: 'white',
-    fontSize: 30,
-    paddingHorizontal: 30,
-  },
-  scrollContentContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  scrollContainerFirstChild: {
-    flexDirection: 'row',
-    height: 45,
-  },
-  touchableOpacity: {
-    borderColor: 'white',
-    borderLeftWidth: 1, // 좌측에 선 추가
-    borderRightWidth: 1,
+  btnText: {
+    color: theme.grey,
+    fontSize: 38,
+    fontWeight: '600',
   },
 });
