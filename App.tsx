@@ -343,7 +343,9 @@ import Icon from 'react-native-vector-icons/Fontisto';
 
 export default function App(): React.JSX.Element {
   const [seconds, setSeconds] = useState(0);
-  const [initialTime, setInitialTime] = useState(0); // 사용자에게 값 입력받기 위해 추가
+  const [initialTime, setInitialTime] = useState(0);
+  const [initialMTime, setInitialMTime] = useState(0);
+  const [initialSTime, setInitialSTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
   const minuteArray = Array.from({length: 60}, (_, index) => index + 1);
@@ -377,8 +379,13 @@ export default function App(): React.JSX.Element {
   };
 
   const handleMinuteSelection = (selectedMinutes: number) => {
-    setInitialTime(selectedMinutes);
+    setInitialMTime(selectedMinutes);
     setSeconds(selectedMinutes * 60);
+  };
+
+  const handleSecondSelection = (selectedSeconds: number) => {
+    setInitialSTime(selectedSeconds);
+    setSeconds(seconds + selectedSeconds);
   };
 
   const formattedTime = () => {
@@ -394,15 +401,27 @@ export default function App(): React.JSX.Element {
       <View style={styles.timeContainer}>
         <Text style={styles.timeStyle}>{formattedTime()}</Text>
       </View>
-      {/* 스크롤뷰 들어갈 자리 */}
       <View style={styles.scrollContainer}>
-        <ScrollView contentContainerStyle={styles.scrollContentContainer}>
-          {minuteArray.map((minute, index) => (
-            <Text style={styles.scrollMinutes} key={index}>
-              {minute}
-            </Text>
-          ))}
-        </ScrollView>
+        <View style={{flexDirection: 'row'}}>
+          <ScrollView contentContainerStyle={styles.scrollContentContainer}>
+            {minuteArray.map((minute, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleMinuteSelection(minute)}>
+                <Text style={styles.scrollMinutes}>{minute}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+          <ScrollView contentContainerStyle={styles.scrollContentContainer}>
+            {secondArray.map((second, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleSecondSelection(second)}>
+                <Text style={styles.scrollMinutes}>{second}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleToggle}>
