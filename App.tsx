@@ -377,6 +377,8 @@ import {
   View,
   TouchableOpacity,
   TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import {theme} from './colors';
 
@@ -388,11 +390,9 @@ export default function App() {
         <TouchableOpacity>
           <Text style={styles.btnText}>Work</Text>
         </TouchableOpacity>
-        <TouchableHighlight
-          underlayColor="#DDDDDD"
-          onPress={() => console.log('pressd')}>
+        <TouchableOpacity onPress={() => console.log('pressd')}>
           <Text style={styles.btnText}>Travel</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -410,8 +410,28 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   btnText: {
-    color: theme.grey,
+    color: theme.white,
     fontSize: 38,
     fontWeight: '600',
   },
 });
+
+// 여기는 여러가지 버튼 컴포넌트 사용 예시
+{
+  /* <TouchableHighlight
+          underlayColor="red"
+          activeOpacity={1}
+          onPress={() => console.log('pressd')}>
+          <Text style={styles.btnText}>Travel</Text>
+        </TouchableHighlight> */
+}
+{
+  /* <TouchableWithoutFeedback onPress={() => console.log('pressd')}>
+          <Text style={styles.btnText}>Travel</Text>
+        </TouchableWithoutFeedback> */
+}
+{
+  /* <Pressable onPress={() => console.log('pressd')}>
+          <Text style={styles.btnText}>Travel</Text>
+        </Pressable> */
+}
