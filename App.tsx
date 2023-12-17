@@ -369,30 +369,51 @@
 2. 데이터를 유지시키는 방법 (아마도 핸드폰에 저장하기..?)
 3. state 사용법
 */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StatusBar,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Pressable,
+  TextInput,
 } from 'react-native';
 import {theme} from './colors';
 
 export default function App() {
+  const [working, setWorking] = useState(true);
+  const travel = () => setWorking(false);
+  const work = () => setWorking(true);
+
+  useEffect(() => {}, [working]);
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'default'} />
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Text style={styles.btnText}>Work</Text>
+        <TouchableOpacity onPress={work}>
+          <Text
+            style={{
+              ...styles.btnText,
+              color: working ? theme.white : theme.grey,
+            }}>
+            Work
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('pressd')}>
-          <Text style={styles.btnText}>Travel</Text>
+        <TouchableOpacity onPress={travel}>
+          <Text
+            style={{
+              ...styles.btnText,
+              color: !working ? theme.white : theme.grey,
+            }}>
+            Travel
+          </Text>
         </TouchableOpacity>
+      </View>
+      <View>
+        <TextInput
+          placeholder={working ? 'Add a To Do' : 'Where do you want to go?'}
+          style={styles.input}
+        />
       </View>
     </View>
   );
@@ -410,9 +431,11 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   btnText: {
-    color: theme.white,
     fontSize: 38,
     fontWeight: '600',
+  },
+  input: {
+    backgroundColor: theme.white,
   },
 });
 
