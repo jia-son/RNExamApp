@@ -27,11 +27,10 @@ export default function App() {
   const [toDos, setToDos] = useState<{
     [key: string]: {text: string; working: boolean};
   }>({}); // 타입 명시해주기
-  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadToDos();
-  }, [toDos]);
+  }, []);
 
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
