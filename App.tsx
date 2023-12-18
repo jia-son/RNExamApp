@@ -18,18 +18,20 @@ import {
 import {theme} from './colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Modal from 'react-native-modal';
 
 const STORAGE_KEY = '@toDos';
 
 export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState('');
-  // const [toDos, setToDos] = useState<{
-  //   [key: string]: {text: string; working: boolean};
-  // }>({});
   const [toDos, setToDos] = useState<{
     [key: string]: {text: string; working: boolean; done: boolean};
   }>({});
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [updateText, setUpdateText] = useState('');
+  const [selectKey, setSelectKey] = useState('');
 
   useEffect(() => {
     loadToDos();
@@ -58,8 +60,24 @@ export default function App() {
     }
   };
 
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   const updateToDo = (key: string) => {
-    Alert.alert('Update To Do');
+    setSelectKey(key);
+    toggleModal();
+  };
+
+  const handleUpdate = () => {
+    const newToDos = {
+      ...toDos,
+      [selectKey]: {...toDos[selectKey], text: updateText},
+    };
+
+    setToDos(newToDos);
+    saveToDos(newToDos);
+    toggleModal();
   };
 
   const deleteToDo = (key: string) => {
@@ -172,6 +190,18 @@ export default function App() {
           ) : null,
         )}
       </ScrollView>
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Edit To Do</Text>
+          <TextInput
+            style={styles.modalInput}
+            onChangeText={text => setUpdateText(text)}
+          />
+          <TouchableOpacity onPress={handleUpdate}>
+            <Icon name="check-bold" size={30} style={styles.updateBtn} />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -223,5 +253,25 @@ const styles = StyleSheet.create({
   },
   toDoUpdateBtn: {
     paddingRight: 10,
+  },
+  modalContainer: {
+    backgroundColor: theme.white,
+    paddingVertical: 25,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    paddingBottom: 20,
+  },
+  modalInput: {
+    height: 40,
+    borderColor: 'black',
+    borderBottomWidth: 1,
+    paddingHorizontal: 100,
+  },
+  updateBtn: {
+    marginTop: 35,
   },
 });
