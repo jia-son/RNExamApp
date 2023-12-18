@@ -29,7 +29,7 @@ export default function App() {
     [key: string]: {text: string; working: boolean; done: boolean};
   }>({});
 
-  const [isModal, setIsModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateText, setUpdateText] = useState('');
   const [selectKey, setSelectKey] = useState('');
 
@@ -61,7 +61,7 @@ export default function App() {
   };
 
   const toggleModal = () => {
-    setIsModal(!isModal);
+    setIsModalVisible(!isModalVisible);
   };
 
   const updateToDo = (key: string) => {
@@ -190,17 +190,15 @@ export default function App() {
           ) : null,
         )}
       </ScrollView>
-      {/*모달창*/}
-      <Modal isVisible={isModal} onBackdropPress={toggleModal}>
-        <View style={styles.modalContent}>
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Edit To Do</Text>
           <TextInput
             style={styles.modalInput}
             onChangeText={text => setUpdateText(text)}
-            value={updateText}
           />
           <TouchableOpacity onPress={handleUpdate}>
-            <Text>Update</Text>
+            <Icon name="check-bold" size={30} style={styles.updateBtn} />
           </TouchableOpacity>
         </View>
       </Modal>
@@ -256,21 +254,24 @@ const styles = StyleSheet.create({
   toDoUpdateBtn: {
     paddingRight: 10,
   },
-  modalContent: {
+  modalContainer: {
     backgroundColor: theme.white,
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: 25,
     borderRadius: 10,
-  },
-  modalInput: {
-    height: 70,
-    borderBottomWidth: 1,
-    marginBottom: 20,
+    alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
-    color: theme.grey,
+    paddingBottom: 20,
+  },
+  modalInput: {
+    height: 40,
+    borderColor: 'black',
+    borderBottomWidth: 1,
+    paddingHorizontal: 100,
+  },
+  updateBtn: {
+    marginTop: 35,
   },
 });
