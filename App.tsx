@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 
 const STORAGE_KEY = '@toDos';
+const STORAGE_WORK_KEY = '@work';
 
 export default function App() {
   const [working, setWorking] = useState(true);
@@ -34,11 +35,38 @@ export default function App() {
   const [selectKey, setSelectKey] = useState('');
 
   useEffect(() => {
+    const loadWorkingStatus = async () => {
+      try {
+        const getItem = await AsyncStorage.getItem(STORAGE_WORK_KEY);
+        const parsedValue = JSON.parse(getItem ?? 'true');
+        setWorking(parsedValue);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    loadWorkingStatus();
     loadToDos();
   }, []);
 
-  const travel = () => setWorking(false);
-  const work = () => setWorking(true);
+  const travel = () => {
+    try {
+      AsyncStorage.setItem(STORAGE_WORK_KEY, JSON.stringify(false));
+      setWorking(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const work = async () => {
+    try {
+      AsyncStorage.setItem(STORAGE_WORK_KEY, JSON.stringify(true));
+      setWorking(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const onChangeText = (payload: string) => {
     setText(payload);
   };
