@@ -1,7 +1,7 @@
 ## 노마드 코더의 React Native 따라가기
 
 - 본 강의는 expo를 사용하여 진행되나,  
-   강의를 수강하는 본인은 **_react-native-cli를 사용_**했음을 알림
+   강의를 수강하는 본인은 **_react-native-cli를 사용_** 했음을 알림
 
 - **언제나 공식 문서는 빛과 소금이다.**  
    모르는 게 있고 헷갈리는 게 있다면 공식 문서부터 살펴보자.
@@ -44,7 +44,7 @@
 
 <br>
 
-![react native-운영체제 통신](./img/react_native_통신.png 'react native-운영체제 통신')
+![react native-운영체제 통신](./img/react_native_통신.png)
 
 1. 위의 이미지에서 event는 사용자가 화면의 버튼을 누르는 것이라고 가정함
 2. event는 네이티브 쪽(IOS, Android)에 기록됨.
@@ -60,7 +60,7 @@ _추후 종이에 한 번 더 직접 그려보기_
 
 앱의 구조는 다음 그림과 같다.
 
-![react native-앱 구조](./img/react_native_앱%20구조.png 'react native-앱 구조')
+![react native-앱 구조](./img/react_native_앱%20구조.png)
 
 </details>
 
