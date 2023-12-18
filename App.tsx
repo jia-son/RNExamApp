@@ -24,9 +24,12 @@ const STORAGE_KEY = '@toDos';
 export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState('');
+  // const [toDos, setToDos] = useState<{
+  //   [key: string]: {text: string; working: boolean};
+  // }>({});
   const [toDos, setToDos] = useState<{
-    [key: string]: {text: string; working: boolean};
-  }>({}); // 타입 명시해주기
+    [key: string]: {text: string; working: boolean; done: boolean};
+  }>({});
 
   useEffect(() => {
     loadToDos();
@@ -75,11 +78,18 @@ export default function App() {
       return;
     }
     const newToDos = Object.assign({}, toDos, {
-      [Date.now()]: {text, working},
+      [Date.now()]: {text, working, done: false},
     });
     setToDos(newToDos);
     await saveToDos(newToDos);
     setText('');
+  };
+
+  const changeCheckBox = (key: string) => {
+    const newToDos = {...toDos};
+    newToDos[key].done = !newToDos[key].done;
+    setToDos(newToDos);
+    saveToDos(newToDos);
   };
 
   return (
@@ -117,7 +127,26 @@ export default function App() {
         {Object.keys(toDos).map(key =>
           toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key].text}</Text>
+              <View style={styles.toDoBoxAndToDo}>
+                {toDos[key].done === false ? (
+                  <TouchableOpacity onPress={() => changeCheckBox(key)}>
+                    <Icon
+                      name="checkbox-blank-outline"
+                      size={20}
+                      color={theme.white}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => changeCheckBox(key)}>
+                    <Icon
+                      name="checkbox-marked-outline"
+                      size={20}
+                      color={theme.white}
+                    />
+                  </TouchableOpacity>
+                )}
+                <Text style={styles.toDoText}>{toDos[key].text}</Text>
+              </View>
               <TouchableOpacity onPress={() => deleteToDo(key)}>
                 <Icon name="delete-outline" size={20} color={theme.toDoBg} />
               </TouchableOpacity>
@@ -166,5 +195,9 @@ const styles = StyleSheet.create({
     color: theme.white,
     fontSize: 16,
     fontWeight: '500',
+    paddingLeft: 15,
+  },
+  toDoBoxAndToDo: {
+    flexDirection: 'row',
   },
 });
