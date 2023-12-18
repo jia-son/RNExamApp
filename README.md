@@ -297,6 +297,55 @@ _(이것 또한 확장이라 볼 수 있을까?)_
 
 </details>
 
+<br>
+
+<details>
+<summary>데이터 저장하기</summary>
+
+<br>
+
+**1. React Native Async Storage사용하기**
+
+> <https://github.com/react-native-async-storage/async-storage>
+
+**_npm install @react-native-async-storage/async-storage_**  
+위의 명령어 사용해서 설치.  
+사용할 때에는 아래와 같이 쓴다.
+
+```javascript
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// 데이터 저장
+const storeData = async () => {
+  try {
+    await AsyncStorage.setItem('@key', 'value');
+    console.log('Data saved successfully');
+  } catch (error) {
+    console.error('Error saving data:', error);
+  }
+};
+
+// 데이터 불러오기
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@key');
+    if (value !== null) {
+      console.log('Data retrieved successfully:', value);
+    } else {
+      console.log('No data found');
+    }
+  } catch (error) {
+    console.error('Error retrieving data:', error);
+  }
+};
+```
+
+---
+
+**2. DB 사용하기**
+
+</details>
+
 <!-- <details>
 <summary>리액트 네이티브 시작하기</summary>
 
@@ -688,6 +737,35 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
   },
 });
+```
+
+</details>
+
+<details>
+<summary>여러가지 버튼 컴포넌트</summary>
+
+<br>
+
+```javascript
+// 버튼 컴포넌트 사용 예시
+{
+  <TouchableHighlight
+    underlayColor="red"
+    activeOpacity={1}
+    onPress={() => console.log('pressd')}>
+    <Text style={styles.btnText}>Travel</Text>
+  </TouchableHighlight>;
+}
+{
+  <TouchableWithoutFeedback onPress={() => console.log('pressd')}>
+    <Text style={styles.btnText}>Travel</Text>
+  </TouchableWithoutFeedback>;
+}
+{
+  <Pressable onPress={() => console.log('pressd')}>
+    <Text style={styles.btnText}>Travel</Text>
+  </Pressable>;
+}
 ```
 
 </details>

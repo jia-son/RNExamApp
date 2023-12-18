@@ -1,6 +1,5 @@
-// // 스크롤 감소 타이머
-// 노마드 코더의 Work hard travel hard app 따라가기
 /*
+노마드 코더의 Work hard travel hard app 따라가기
 1. TextInput 컴포넌트를 다루는 방법
 2. 데이터를 유지시키는 방법 (아마도 핸드폰에 저장하기..?)
 3. state 사용법
@@ -14,8 +13,13 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {theme} from './colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const STORAGE_KEY = '@toDos';
 
 export default function App() {
   const [working, setWorking] = useState(true);
@@ -23,27 +27,61 @@ export default function App() {
   const [toDos, setToDos] = useState<{
     [key: string]: {text: string; working: boolean};
   }>({}); // 타입 명시해주기
+  // const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadToDos();
+  }, [toDos]);
+
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
   const onChangeText = (payload: string) => {
     setText(payload);
   };
 
-  const addToDo = () => {
+  const saveToDos = async (toSave: any) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const loadToDos = async () => {
+    try {
+      const storeGet = await AsyncStorage.getItem(STORAGE_KEY);
+      setToDos(JSON.parse(storeGet ?? '[]'));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteToDo = (key: string) => {
+    Alert.alert('Delete To Do', 'Are you sure?', [
+      {text: 'Cancel'},
+      {
+        text: "I'm sure",
+        onPress: () => {
+          const newToDos = {...toDos};
+          delete newToDos[key];
+          setToDos(newToDos);
+          saveToDos(newToDos);
+        },
+      },
+    ]);
+  };
+
+  const addToDo = async () => {
     if (text === '') {
       return;
     }
-    // todo 저장
     const newToDos = Object.assign({}, toDos, {
       [Date.now()]: {text, working},
     });
     setToDos(newToDos);
+    await saveToDos(newToDos);
     setText('');
   };
-
-  useEffect(() => {
-    console.log(toDos);
-  }, [toDos]);
 
   return (
     <View style={styles.container}>
@@ -81,6 +119,9 @@ export default function App() {
           toDos[key].working === working ? (
             <View style={styles.toDo} key={key}>
               <Text style={styles.toDoText}>{toDos[key].text}</Text>
+              <TouchableOpacity onPress={() => deleteToDo(key)}>
+                <Icon name="delete-outline" size={20} color={theme.toDoBg} />
+              </TouchableOpacity>
             </View>
           ) : null,
         )}
@@ -113,6 +154,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   toDo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: theme.grey,
     marginBottom: 10,
     paddingVertical: 20,
@@ -125,23 +169,3 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-
-// 여기는 여러가지 버튼 컴포넌트 사용 예시
-{
-  /* <TouchableHighlight
-          underlayColor="red"
-          activeOpacity={1}
-          onPress={() => console.log('pressd')}>
-          <Text style={styles.btnText}>Travel</Text>
-        </TouchableHighlight> */
-}
-{
-  /* <TouchableWithoutFeedback onPress={() => console.log('pressd')}>
-          <Text style={styles.btnText}>Travel</Text>
-        </TouchableWithoutFeedback> */
-}
-{
-  /* <Pressable onPress={() => console.log('pressd')}>
-          <Text style={styles.btnText}>Travel</Text>
-        </Pressable> */
-}
