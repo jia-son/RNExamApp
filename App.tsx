@@ -58,6 +58,10 @@ export default function App() {
     }
   };
 
+  const updateToDo = (key: string) => {
+    Alert.alert('Update To Do');
+  };
+
   const deleteToDo = (key: string) => {
     Alert.alert('Delete To Do', 'Are you sure?', [
       {text: 'Cancel'},
@@ -147,9 +151,23 @@ export default function App() {
                 )}
                 <Text style={styles.toDoText}>{toDos[key].text}</Text>
               </View>
-              <TouchableOpacity onPress={() => deleteToDo(key)}>
-                <Icon name="delete-outline" size={20} color={theme.toDoBg} />
-              </TouchableOpacity>
+              <View style={styles.toDoUpdateBtnAndtrashBtn}>
+                <TouchableOpacity onPress={() => updateToDo(key)}>
+                  <Icon
+                    name="lead-pencil"
+                    size={20}
+                    color={theme.white}
+                    style={styles.toDoUpdateBtn}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => deleteToDo(key)}>
+                  <Icon
+                    name="trash-can-outline"
+                    size={20}
+                    color={theme.white}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           ) : null,
         )}
@@ -199,5 +217,11 @@ const styles = StyleSheet.create({
   },
   toDoBoxAndToDo: {
     flexDirection: 'row',
+  },
+  toDoUpdateBtnAndtrashBtn: {
+    flexDirection: 'row',
+  },
+  toDoUpdateBtn: {
+    paddingRight: 10,
   },
 });
