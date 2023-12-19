@@ -140,7 +140,7 @@ export function HomeScreen({navigation}: any) {
     <View style={styles.container}>
       <StatusBar barStyle={'default'} />
       <TouchableOpacity onPress={() => navigation.navigate('DBHome')}>
-        <Text style={styles.dbAppBtn}>ver.DBHome</Text>
+        <Text style={styles.dbHomeBtn}>ver.DBHome</Text>
       </TouchableOpacity>
       <View style={styles.header}>
         <TouchableOpacity onPress={work}>
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   updateBtn: {
     marginTop: 35,
   },
-  dbAppBtn: {
+  dbHomeBtn: {
     fontSize: 20,
     fontWeight: '600',
     color: theme.white,
