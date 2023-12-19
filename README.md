@@ -344,6 +344,15 @@ const getData = async () => {
 
 **2. DB 사용하기**
 
+사용하려는 DB : AWS DynamoDB
+
+**_npm install react-native-aws3_**  
+위의 명령어 사용하여 설치 진행해두고 AWS 사이트에 들어가 테이블을 생성했다.
+
+다른 곳과 마찬가지로 공식 문서에 상세하게 설명되어 있으니, 아래 링크를 참고하여 진행해보자.
+
+> <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html>
+
 </details>
 
 <!-- <details>
