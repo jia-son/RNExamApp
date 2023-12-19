@@ -17,7 +17,7 @@ import Modal from 'react-native-modal';
 const STORAGE_KEY = '@toDos';
 const STORAGE_WORK_KEY = '@work';
 
-export function HomeScreen({navigation}: any) {
+export function DBHomeScreen({navigation}: any) {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState('');
   const [toDos, setToDos] = useState<{
@@ -139,8 +139,8 @@ export function HomeScreen({navigation}: any) {
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'default'} />
-      <TouchableOpacity onPress={() => navigation.navigate('DBHome')}>
-        <Text style={styles.dbAppBtn}>ver.DBHome</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.dbAppBtn}>ver.Home</Text>
       </TouchableOpacity>
       <View style={styles.header}>
         <TouchableOpacity onPress={work}>
